@@ -1,11 +1,7 @@
 ﻿using MassTransit;
-using MassTransitTesting.API.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Moq;
 
 namespace MassTransitTesting.API.IntegrationTests
 {
@@ -18,11 +14,6 @@ namespace MassTransitTesting.API.IntegrationTests
 
             builder.ConfigureTestServices( services =>
             {
-                services.RemoveAll<IEntryRepository>();
-                services.RemoveAll<IEntryRestrictionRepository>();
-                services.AddScoped( _ => MockEntryRepository.Object );
-                services.AddScoped( _ => MockEntryRestrictionRepository.Object );
-
                 services.AddMassTransitTestHarness( x =>
                 {
                     x.AddDelayedMessageScheduler();
@@ -43,7 +34,5 @@ namespace MassTransitTesting.API.IntegrationTests
         Task IAsyncLifetime.DisposeAsync() => Task.CompletedTask;
 
         public HttpClient HttpClient { get; set; } = default!;
-        public Mock<IEntryRepository> MockEntryRepository { get; } = new Mock<IEntryRepository>();
-        public Mock<IEntryRestrictionRepository> MockEntryRestrictionRepository { get; } = new Mock<IEntryRestrictionRepository>();
     }
 }

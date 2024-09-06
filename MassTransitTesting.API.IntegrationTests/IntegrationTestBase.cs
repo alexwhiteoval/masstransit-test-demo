@@ -15,10 +15,6 @@ namespace MassTransitTesting.API.IntegrationTests
 
         public Task InitializeAsync() => Task.CompletedTask;
 
-        public async Task DisposeAsync()
-        {
-            _client.DefaultRequestHeaders.Authorization = null;
-            //await _harness.Clean();
-        }
+        public Task DisposeAsync() => Task.CompletedTask;
     }
 }

@@ -14,20 +14,16 @@ namespace MassTransitTesting.API.IntegrationTests.Consumers
         [Fact]
         public async Task Consumer_ConsumesMessage()
         {
-            // Arrange
             var entrySubmitted = new EntrySubmitted
             {
-                EntryIds = [NewId.NextGuid()],
-                SubmissionId = NewId.NextGuid(),
                 CorrelationId = NewId.NextGuid()
             };
 
-            // Act
             await _harness.Bus.Publish( entrySubmitted );
 
-            // Assert
-            ( await _harness.Consumed.Any<EntrySubmitted>( x =>
-                x.Context.Message.CorrelationId == entrySubmitted.CorrelationId ) ).Should().BeTrue();
+
+            var result = await _harness.Consumed.Any<EntrySubmitted>( x => x.Context.Message.CorrelationId == entrySubmitted.CorrelationId );
+            result.Should().BeTrue();
         }
 
         [Fact]
@@ -40,7 +36,8 @@ namespace MassTransitTesting.API.IntegrationTests.Consumers
 
             await _harness.Bus.Publish( entryEvent );
 
-            ( await _harness.Consumed.Any<EntrySubmitted>( x => x.Context.Message.CorrelationId == entryEvent.CorrelationId ) ).Should().BeFalse();
+            var result = await _harness.Consumed.Any<EntrySubmitted>( x => x.Context.Message.CorrelationId == entryEvent.CorrelationId );
+            result.Should().BeFalse();
         }
     }
 }

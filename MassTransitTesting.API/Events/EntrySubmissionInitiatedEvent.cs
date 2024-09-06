@@ -2,7 +2,7 @@
 
 namespace MassTransitTesting.API.Events
 {
-    public class EntrySubmitted : CorrelatedBy<Guid>
+    public class EntrySubmissionInitiatedEvent : CorrelatedBy<Guid>
     {
         public Guid CorrelationId { get; set; }
     }
